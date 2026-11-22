@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Google Web search URL builder</title>
+<style>
+  body { color: #152535; background: #f8fafc; font: 1rem/1.55 system-ui; max-width: 40rem; margin: 3rem auto; padding: 0 1.25rem; }
+  label, output { display: block; }
+  input, button { color: inherit; font: inherit; margin: .35rem 0; padding: .55rem .7rem; }
+  input { box-sizing: border-box; width: 100%; }
+  output { min-height: 2em; overflow-wrap: anywhere; }
+  a { color: #174ea6; }
+</style>
+<main>
+  <h1>Google Web search URL builder</h1>
+  <p>Enter a query to get a Google Web link. You can copy the result or open it in a new tab.</p>
+  <form>
+    <label for="query">Search terms</label>
+    <input id="query" type="search" autocomplete="off" required>
+    <button type="submit">Build link</button>
+  </form>
+  <output for="query" aria-live="polite"></output>
+  <p><a id="open" hidden target="_blank" rel="noopener noreferrer">Open Google Web results</a></p>
+  <p>This standalone tool stores nothing. Opening the link sends the query to Google. Made by the team behind <a href="https://getridofaioverview.com/google-web-filter/?utm_source=github&amp;utm_medium=referral&amp;utm_campaign=overview_geo_launch">Get Rid of AI Overview</a>.</p>
+</main>
+<script>
+  const form = document.querySelector("form");
+  const input = document.querySelector("#query");
+  const output = document.querySelector("output");
+  const open = document.querySelector("#open");
+
+  form.addEventListener("submit", (event) => {
+    event.preventDefault();
+    const query = input.value.trim();
+    open.hidden = !query;
+    if (!query) {
+      output.textContent = "Enter a search term.";
+      return;
+    }
+    const url = new URL("https://www.google.com/search");
+    url.searchParams.set("q", query);
+    url.searchParams.set("udm", "14");
+    open.href = url.href;
+    output.textContent = url.href;
+  });
+</script>
+</html>
